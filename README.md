@@ -56,7 +56,7 @@ API Express moderne, typée « stack JS », avec Drizzle ORM et PostgreSQL (Neon
     <img src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/eslint/eslint-original.svg" height="40" alt="ESLint" />
   </a>
   <a href="https://prettier.io" title="Prettier">
-    <img src="https://camo.githubusercontent.com/292e123a137d6dcb60351194dfc4f8182b6c54c37b204ca3d55222e90623cdbc/68747470733a2f2f756e706b672e636f6d2f70726574746965722d6c6f676f40312e302e332f696d616765732f70726574746965722d62616e6e65722d6c696768742e737667" height="40" alt="Prettier" />
+    <img src="https://prettier.io/icon.png" height="40" alt="Prettier" />
   </a>
 </p>
 

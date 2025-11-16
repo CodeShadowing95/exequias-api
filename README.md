@@ -194,8 +194,12 @@ exequias-api/
   - Body JSON (zod): `{ name, email, password, role? }`
   - Valide l’email et renvoie `201` avec `{ id, name, email, role }`
   - Dépose un cookie `token` (JWT) `httpOnly`, `sameSite=strict`, `secure` en prod.
-- `POST /api/auth/sign-in` — WIP (placeholder).
-- `POST /api/auth/sign-out` — WIP (placeholder).
+- `POST /api/auth/sign-in` — authentification utilisateur.
+  - Body JSON (zod): `{ email, password }`
+  - Vérifie l’utilisateur en base puis compare le mot de passe (`comparePassword`).
+  - À implémenter côté contrôleur: signer un JWT (`jwttoken.sign`) et le déposer en cookie via `cookies.set`.
+- `POST /api/auth/sign-out` — déconnexion.
+  - À implémenter: suppression du cookie (`cookies.clear`) et réponse `200`.
 
 ---
 
@@ -216,6 +220,12 @@ curl -i \
   -H "Content-Type: application/json" \
   -d '{"name":"Jane Doe","email":"jane.doe@example.com","password":"secret123","role":"user"}' \
   http://localhost:3000/api/auth/sign-up
+
+# Connexion (exemple, une fois le contrôleur sign-in implémenté)
+curl -i \
+  -H "Content-Type: application/json" \
+  -d '{"email":"jane.doe@example.com","password":"secret123"}' \
+  http://localhost:3000/api/auth/sign-in
 ```
 
 Réponses attendues: `200` pour `/health` & `/api`, `201` pour un `sign-up` valide (avec en-tête `Set-Cookie: token=...`).

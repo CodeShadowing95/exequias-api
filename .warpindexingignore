@@ -1,0 +1,19 @@
+# Reduce Warp codebase index size for faster, more relevant AI
+# Syntax is similar to .gitignore
+
+# Dependencies
+node_modules/
+
+# Generated / build artifacts
+coverage/
+drizzle/
+logs/
+
+# Logs
+*.log
+
+# Lockfiles (rarely needed for AI assistance)
+package-lock.json
+
+# Misc
+.DS_Store

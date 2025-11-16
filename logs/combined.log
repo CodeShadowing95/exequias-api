@@ -31,3 +31,9 @@
 {"level":"info","message":"Nouvelle inscription de l'utilisateur coyote@starrk.com","service":"exequias-api","timestamp":"2025-11-15T09:24:00.747Z"}
 {"level":"info","message":"Nouvel utilisateur inscrit : Coyote Starrk (coyote@starrk.com)","service":"exequias-api","timestamp":"2025-11-15T09:24:00.749Z"}
 {"level":"info","message":"::1 - - [15/Nov/2025:09:24:00 +0000] \"POST /api/auth/sign-up HTTP/1.1\" 201 127 \"-\" \"HTTPie\"","service":"exequias-api","timestamp":"2025-11-15T09:24:00.751Z"}
+{"level":"info","message":"::1 - - [16/Nov/2025:04:17:11 +0000] \"POST /api/sign-in HTTP/1.1\" 404 151 \"-\" \"HTTPie\"","service":"exequias-api","timestamp":"2025-11-16T04:17:11.783Z"}
+{"level":"info","message":"Authentification réussie pour l'utilisateur admin@test.com","service":"exequias-api","timestamp":"2025-11-16T04:19:14.144Z"}
+{"level":"info","message":"Utilisateur connecté : admin@test.com","service":"exequias-api","timestamp":"2025-11-16T04:19:14.153Z"}
+{"level":"info","message":"::1 - - [16/Nov/2025:04:19:14 +0000] \"POST /api/auth/sign-in HTTP/1.1\" 200 107 \"-\" \"HTTPie\"","service":"exequias-api","timestamp":"2025-11-16T04:19:14.161Z"}
+{"level":"info","message":"Aucun token trouvé lors de la déconnexion","service":"exequias-api","timestamp":"2025-11-16T04:20:34.192Z"}
+{"level":"info","message":"::1 - - [16/Nov/2025:04:20:34 +0000] \"POST /api/auth/sign-out HTTP/1.1\" 200 35 \"-\" \"HTTPie\"","service":"exequias-api","timestamp":"2025-11-16T04:20:34.195Z"}

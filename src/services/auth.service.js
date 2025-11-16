@@ -15,6 +15,17 @@ export const hashPassword = async password => {
   }
 };
 
+export const comparePassword = async (password, hashedPassword) => {
+  try {
+    return await bcrypt.compare(password, hashedPassword);
+  } catch (error) {
+    logger.error(
+      `Erreur lors de la comparaison du mot de passe : ${error.message}`
+    );
+    throw new Error('Erreur lors de la comparaison du mot de passe');
+  }
+};
+
 export const createUser = async ({ name, email, password, role = 'user' }) => {
   try {
     const existingUser = await db
@@ -50,5 +61,35 @@ export const createUser = async ({ name, email, password, role = 'user' }) => {
       `Erreur lors de l'inscription de l'utilisateur ${email} : ${error}`
     );
     throw new Error('Erreur lors de l\'inscription de l\'utilisateur');
+  }
+};
+
+export const authenticateUser = async ({ email, password }) => {
+  try {
+    const existingUser = await db
+      .select()
+      .from(users)
+      .where(eq(users.email, email))
+      .limit(1);
+
+    if (existingUser.length === 0) {
+      throw new Error('Utilisateur non trouvé');
+    }
+
+    const user = existingUser[0];
+
+    const isPasswordValid = await comparePassword(password, user.password);
+
+    if (!isPasswordValid) {
+      throw new Error('Mot de passe incorrect');
+    }
+
+    logger.info(`Authentification réussie pour l'utilisateur ${email}`);
+    return user;
+  } catch (error) {
+    logger.error(
+      `Erreur lors de l'authentification de l'utilisateur ${email} : ${error}`
+    );
+    throw error;
   }
 };

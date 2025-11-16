@@ -1,4 +1,6 @@
 import express from 'express';
+import path from 'path';
+import { fileURLToPath } from 'url';
 import logger from '#config/logger.js';
 import helmet from 'helmet';
 import morgan from 'morgan';
@@ -6,9 +8,7 @@ import cookieParser from 'cookie-parser';
 import cors from 'cors';
 
 import authRoutes from '#routes/auth.route.js';
-
-import path from 'path';
-import { fileURLToPath } from 'url';
+import securityMiddleware from '#middleware/security.middleware.js';
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
@@ -24,6 +24,8 @@ app.use(cookieParser());
 app.use(
   morgan('combined', { stream: { write: msg => logger.info(msg.trim()) } })
 );
+
+app.use(securityMiddleware);
 
 app.get('/', (req, res) => {
   logger.info('Hello from Exequias API !');

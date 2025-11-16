@@ -37,3 +37,28 @@
 {"level":"info","message":"::1 - - [16/Nov/2025:04:19:14 +0000] \"POST /api/auth/sign-in HTTP/1.1\" 200 107 \"-\" \"HTTPie\"","service":"exequias-api","timestamp":"2025-11-16T04:19:14.161Z"}
 {"level":"info","message":"Aucun token trouvé lors de la déconnexion","service":"exequias-api","timestamp":"2025-11-16T04:20:34.192Z"}
 {"level":"info","message":"::1 - - [16/Nov/2025:04:20:34 +0000] \"POST /api/auth/sign-out HTTP/1.1\" 200 35 \"-\" \"HTTPie\"","service":"exequias-api","timestamp":"2025-11-16T04:20:34.195Z"}
+{"level":"info","message":"Arcjet middleware decision : [object Object]","service":"exequias-api","timestamp":"2025-11-16T05:17:31.749Z"}
+{"level":"info","message":"::1 - - [16/Nov/2025:05:17:31 +0000] \"GET /health HTTP/1.1\" 200 75 \"-\" \"HTTPie\"","service":"exequias-api","timestamp":"2025-11-16T05:17:31.768Z"}
+{"level":"info","message":"Arcjet middleware decision : [object Object]","service":"exequias-api","timestamp":"2025-11-16T05:18:28.653Z"}
+{"level":"info","message":"::1 - - [16/Nov/2025:05:18:28 +0000] \"GET /health HTTP/1.1\" 200 75 \"-\" \"HTTPie\"","service":"exequias-api","timestamp":"2025-11-16T05:18:28.660Z"}
+{"level":"info","message":"Arcjet middleware decision : [object Object]","service":"exequias-api","timestamp":"2025-11-16T05:18:29.558Z"}
+{"level":"info","message":"::1 - - [16/Nov/2025:05:18:29 +0000] \"GET /health HTTP/1.1\" 200 75 \"-\" \"HTTPie\"","service":"exequias-api","timestamp":"2025-11-16T05:18:29.586Z"}
+{"level":"info","message":"Arcjet middleware decision : [object Object]","service":"exequias-api","timestamp":"2025-11-16T05:18:30.306Z"}
+{"level":"info","message":"::1 - - [16/Nov/2025:05:18:30 +0000] \"GET /health HTTP/1.1\" 200 75 \"-\" \"HTTPie\"","service":"exequias-api","timestamp":"2025-11-16T05:18:30.308Z"}
+{"level":"info","message":"Arcjet middleware decision : [object Object]","service":"exequias-api","timestamp":"2025-11-16T05:18:30.974Z"}
+{"level":"info","message":"::1 - - [16/Nov/2025:05:18:30 +0000] \"GET /health HTTP/1.1\" 200 75 \"-\" \"HTTPie\"","service":"exequias-api","timestamp":"2025-11-16T05:18:30.977Z"}
+{"level":"info","message":"Arcjet middleware decision : [object Object]","service":"exequias-api","timestamp":"2025-11-16T05:18:31.642Z"}
+{"level":"info","message":"::1 - - [16/Nov/2025:05:18:31 +0000] \"GET /health HTTP/1.1\" 200 75 \"-\" \"HTTPie\"","service":"exequias-api","timestamp":"2025-11-16T05:18:31.645Z"}
+{"level":"info","message":"Arcjet middleware decision : [object Object]","service":"exequias-api","timestamp":"2025-11-16T05:18:32.267Z"}
+{"level":"info","message":"::1 - - [16/Nov/2025:05:18:32 +0000] \"GET /health HTTP/1.1\" 200 74 \"-\" \"HTTPie\"","service":"exequias-api","timestamp":"2025-11-16T05:18:32.270Z"}
+{"level":"info","message":"Arcjet middleware decision : [object Object]","service":"exequias-api","timestamp":"2025-11-16T05:18:32.928Z"}
+{"level":"info","message":"::1 - - [16/Nov/2025:05:18:32 +0000] \"GET /health HTTP/1.1\" 200 75 \"-\" \"HTTPie\"","service":"exequias-api","timestamp":"2025-11-16T05:18:32.930Z"}
+{"level":"info","message":"Arcjet middleware decision : [object Object]","service":"exequias-api","timestamp":"2025-11-16T05:18:33.556Z"}
+{"level":"info","message":"::1 - - [16/Nov/2025:05:18:33 +0000] \"GET /health HTTP/1.1\" 200 75 \"-\" \"HTTPie\"","service":"exequias-api","timestamp":"2025-11-16T05:18:33.561Z"}
+{"level":"info","message":"Arcjet middleware decision : [object Object]","service":"exequias-api","timestamp":"2025-11-16T05:18:34.199Z"}
+{"level":"info","message":"::1 - - [16/Nov/2025:05:18:34 +0000] \"GET /health HTTP/1.1\" 200 75 \"-\" \"HTTPie\"","service":"exequias-api","timestamp":"2025-11-16T05:18:34.208Z"}
+{"level":"info","message":"Arcjet middleware decision : [object Object]","service":"exequias-api","timestamp":"2025-11-16T05:18:34.845Z"}
+{"level":"info","message":"::1 - - [16/Nov/2025:05:18:34 +0000] \"GET /health HTTP/1.1\" 200 74 \"-\" \"HTTPie\"","service":"exequias-api","timestamp":"2025-11-16T05:18:34.850Z"}
+{"level":"info","message":"Arcjet middleware decision : [object Object]","service":"exequias-api","timestamp":"2025-11-16T05:18:35.618Z"}
+{"ip":"::1","level":"warn","message":"Rate limit request detected.","path":"/health","service":"exequias-api","timestamp":"2025-11-16T05:18:35.619Z","userAgent":"HTTPie"}
+{"level":"info","message":"::1 - - [16/Nov/2025:05:18:35 +0000] \"GET /health HTTP/1.1\" 200 76 \"-\" \"HTTPie\"","service":"exequias-api","timestamp":"2025-11-16T05:18:35.622Z"}

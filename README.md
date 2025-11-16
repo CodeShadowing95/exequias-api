@@ -29,6 +29,38 @@ API Express moderne, typée « stack JS », avec Drizzle ORM et PostgreSQL (Neon
 - PostgreSQL via Neon HTTP (`@neondatabase/serverless` + `drizzle-orm/neon-http`)
 - Winston + Morgan (logs JSON + console en dev)
 - ESLint + Prettier (qualité et style de code)
+- Arcjet (détection de bots, shield contre attaques courantes, rate limiting)
+
+### Logos
+
+<p align="left">
+  <a href="https://nodejs.org" title="Node.js">
+    <img src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/nodejs/nodejs-original.svg" height="40" alt="Node.js" />
+  </a>
+  <a href="https://expressjs.com" title="Express">
+    <img src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/express/express-original.svg" height="40" alt="Express" />
+  </a>
+  <a href="https://github.com/drizzle-team/drizzle-orm" title="Drizzle-ORM">
+    <img src="https://avatars.githubusercontent.com/u/108468352?s=48&v=4" height="40" alt="Drizzle-ORM" />
+  </a>
+  <a href="https://github.com/arcjet" title="Arcjet">
+    <img src="https://camo.githubusercontent.com/ad3185b84c60f7afd2503c4932b11d7aa7403718915f66ca177e85c5ff538d93/68747470733a2f2f6172636a65742e636f6d2f6c6f676f2f6172636a65742d6461726b2d6c6f636b75702d766f796167652d686f72697a6f6e74616c2e737667" height="40" alt="Arcjet" />
+  </a>
+  <a href="https://zod.dev/" title="Zod">
+    <img src="https://raw.githubusercontent.com/colinhacks/zod/HEAD/logo.svg" height="40" alt="Zod" />
+  </a>
+  <a href="https://www.postgresql.org" title="PostgreSQL">
+    <img src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/postgresql/postgresql-original.svg" height="40" alt="PostgreSQL" />
+  </a>
+  <a href="https://eslint.org" title="ESLint">
+    <img src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/eslint/eslint-original.svg" height="40" alt="ESLint" />
+  </a>
+  <a href="https://prettier.io" title="Prettier">
+    <img src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/prettier/prettier-original.svg" height="40" alt="Prettier" />
+  </a>
+</p>
+
+> Note: Certaines technos (Winston/Morgan, JWT, Bcrypt) n’ont pas de logo officiel facilement intégrable via CDN; elles sont décrites et référencées dans les sections ci‑dessus.
 
 ---
 
@@ -46,6 +78,8 @@ Sécurité
 Logs & Observabilité
 - `morgan` — trace chaque requête HTTP; branché sur `winston` (via stream) pour centraliser.
 - `winston` — logger JSON; enregistre dans `logs/combined.log` et `logs/error.log`, console en dev.
+- `@arcjet/node` — moteur de sécurité: `detectBot`, `shield`, `slidingWindow` (rate limiting).
+- `@arcjet/inspect` — outils d’inspection et d’analyse (utiles en dev).
 
 Base de données & ORM
 - `drizzle-orm` — ORM typé pour Postgres (définit schémas, requêtes, migrations) (pg-core), requêtes chainées, retours typés.
@@ -99,6 +133,10 @@ DATABASE_URL=postgres://user:password@host:5432/dbname
 
 # Sécurité (JWT)
 JWT_SECRET=change-me-in-production
+
+# Arcjet (sécurité)
+# Obtenir la clé: https://app.arcjet.com
+ARCJET_KEY=your-arcjet-site-key
 ```
 
 ---
@@ -160,13 +198,16 @@ exequias-api/
 │   ├── server-page.html  # page d’accueil stylée
 │   ├── config/
 │   │   ├── logger.js     # Winston + transports fichiers/console
-│   │   └── database.js   # drizzle(neon-http) + export db
+│   │   ├── database.js   # drizzle(neon-http) + export db
+│   │   └── arcjet.js     # règles Arcjet (shield, bots, rate limit)
 │   ├── models/
 │   │   └── user.model.js # schéma users (pg-core)
 │   ├── routes/
 │   │   └── auth.route.js # endpoints /api/auth
 │   ├── controllers/
 │   │   └── auth.controller.js # logique signup (validation + cookies + token)
+│   ├── middleware/
+│   │   └── security.middleware.js # décisions Arcjet (403 si bot/shield/rate limit)
 │   ├── services/
 │   │   └── auth.service.js    # hash + création utilisateur en DB
 │   ├── validations/
@@ -236,6 +277,81 @@ Réponses attendues: `200` pour `/health` & `/api`, `201` pour un `sign-up` vali
 
 - Cookie `token` configuré `httpOnly`, `sameSite=strict`, `secure` en prod, `maxAge=15min`.
 - `JWT_SECRET` requis en prod (par défaut une valeur de dev est utilisée).
+
+---
+
+## 🛡️ Arcjet — Configuration & Exemples
+
+- Dépendances: `@arcjet/node`, `@arcjet/inspect`. Clé requise via `ARCJET_KEY` dans `.env`.
+- Modes Arcjet:
+  - `LIVE` — bloque les requêtes malveillantes (production).
+  - `DRY_RUN` — n’applique pas de blocage, log uniquement (utile en dev/observabilité).
+
+Exemple de configuration (`src/config/arcjet.js`):
+
+```js
+import arcjet, { shield, detectBot, slidingWindow } from '@arcjet/node';
+
+const aj = arcjet({
+  key: process.env.ARCJET_KEY,
+  rules: [
+    shield({ mode: 'LIVE' }),
+    detectBot({
+      mode: 'LIVE',
+      allow: [
+        'CATEGORY:SEARCH_ENGINE',
+        'CATEGORY:PREVIEW',
+      ],
+    }),
+    slidingWindow({ mode: 'LIVE', interval: '2s', max: 5 }),
+  ],
+});
+
+export default aj;
+```
+
+Rate limit par rôle (extrait de `src/middleware/security.middleware.js`):
+
+```js
+import aj from '#config/arcjet.js';
+import { slidingWindow } from '@arcjet/node';
+
+const securityMiddleware = async (req, res, next) => {
+  const role = req.user?.role || 'guest';
+
+  let limit;
+  switch (role) {
+    case 'admin':
+      limit = 100; // 100/min
+      break;
+    case 'user':
+      limit = 50; // 50/min
+      break;
+    default:
+      limit = 10; // 10/min
+  }
+
+  const client = aj.withRule(
+    slidingWindow({ mode: 'LIVE', interval: '1m', max: limit, name: `${role}_rate_limit` })
+  );
+
+  const decision = await client.protect(req);
+  // Selon decision.reason: bot, shield, rateLimit → répondre 403
+  next();
+};
+```
+
+Montage du middleware (`src/app.js`):
+
+```js
+import securityMiddleware from '#middleware/security.middleware.js';
+app.use(securityMiddleware);
+```
+
+Tests rapides:
+- Faites plusieurs requêtes rapides vers `/api` pour déclencher `rate limit` et observer un `403`.
+- Simulez des user agents bots pour tester `detectBot`.
+- Passez `mode: 'DRY_RUN'` en dev pour analyser sans bloquer.
 
 ---
 
